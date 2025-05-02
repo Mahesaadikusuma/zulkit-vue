@@ -16,6 +16,7 @@ function toggleDropdown() {
 }
 
 function handleClickOutside(event) {
+  console.log(event.target)
   if (
     dropdownRef.value &&
     !dropdownRef.value.contains(event.target) &&

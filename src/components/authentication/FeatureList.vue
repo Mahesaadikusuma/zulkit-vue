@@ -1,5 +1,5 @@
 <script setup>
-import Customizable from './features/customizable.vue'
+import Customizable from './features/Customizable.vue'
 import Documentation from './features/Documentation.vue'
 import Fortune from './features/Fortune.vue'
 </script>
