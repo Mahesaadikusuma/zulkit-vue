@@ -5,6 +5,7 @@ const API_ENDPOINT = {
   categories: `${CONFIG.BASE_URL}/categories`,
   login: `${CONFIG.BASE_URL}/login`,
   register: `${CONFIG.BASE_URL}/register`,
+  profileUser: `${CONFIG.BASE_URL}/user`,
 }
 
 export default API_ENDPOINT

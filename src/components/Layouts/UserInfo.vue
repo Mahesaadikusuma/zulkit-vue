@@ -1,11 +1,16 @@
 <script setup>
+import { useUserStore } from '@/stores/user'
 import { onMounted, onUnmounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 
 const router = useRouter()
+const userStore = useUserStore()
 
 const props = defineProps({
-  user: Object,
+  user: {
+    type: Object,
+    required: true,
+  },
 })
 
 const show = ref(false)
@@ -16,7 +21,7 @@ function toggleDropdown() {
 }
 
 function handleClickOutside(event) {
-  console.log(event.target)
+  // console.log(event.target)
   if (
     dropdownRef.value &&
     !dropdownRef.value.contains(event.target) &&
@@ -33,12 +38,20 @@ onMounted(() => {
 onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside)
 })
+
+function logout() {
+  localStorage.removeItem('token_type')
+  localStorage.removeItem('tokenAuth')
+  // userStore.fetchUser()
+  userStore.resetUser()
+  router.push('/login')
+}
 </script>
 
 <template>
-  <div class="md:order-2">
+  <div v-if="user" class="md:order-2">
     <div class="flex items-center">
-      <div class="mr-2 text-sm font-regular dark:text-white">Halo, Mahesa</div>
+      <div class="mr-2 text-sm font-regular dark:text-white">Halo, {{ user.name }}</div>
       <button
         type="button"
         class="flex mr-3 text-sm cursor-pointer bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
@@ -63,9 +76,9 @@ onUnmounted(() => {
       ref="dropdownRef"
     >
       <div class="px-4 py-3">
-        <span class="block text-sm text-gray-900 dark:text-white">mahesa</span>
+        <span class="block text-sm text-gray-900 dark:text-white">{{ user.name }}</span>
         <span class="block text-sm text-gray-500 truncate font-regular dark:text-gray-400">
-          ada@gmail.com
+          {{ user.email }}
         </span>
       </div>
       <ul class="py-1" aria-labelledby="dropdown">
@@ -84,12 +97,13 @@ onUnmounted(() => {
           >
         </li>
         <li>
-          <a
-            href=""
+          <button
             @click="logout"
-            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-            >Sign out</a
+            type="button"
+            class="block w-full text-left cursor-pointer px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
           >
+            Sign out
+          </button>
         </li>
       </ul>
     </div>
@@ -129,4 +143,6 @@ onUnmounted(() => {
       </svg>
     </button>
   </div>
+
+  <div class="" v-else>Tidak Ada User</div>
 </template>

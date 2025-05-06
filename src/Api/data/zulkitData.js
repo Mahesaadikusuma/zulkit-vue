@@ -48,8 +48,31 @@ class ZulkitDB {
       return response.data.data
     } catch (err) {
       console.log(err)
-      throw error
+      throw err
     }
+  }
+  static async AuthUserProfile() {
+    try {
+      const response = await axios.get(API_ENDPOINT.profileUser, {
+        headers: getAuthHeader(),
+      })
+      if (response.status !== 200) {
+        throw new Error('Network response not ok')
+      }
+      console.log(response.data.data)
+      return response
+    } catch (err) {
+      console.error('AuthUserProfile error:', err)
+      throw err
+    }
+  }
+}
+
+function getAuthHeader() {
+  return {
+    Authorization: `${localStorage.getItem('token_type')} ${localStorage.getItem('tokenAuth')}`,
+    // Authorization: localStorage.getItem('token_type') + ' ' + localStorage.getItem('tokenAuth'),
+    'Content-Type': 'application/json',
   }
 }
 
