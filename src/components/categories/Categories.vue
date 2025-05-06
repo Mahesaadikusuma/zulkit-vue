@@ -12,7 +12,7 @@ const router = useRoute()
 async function fetchCategories() {
   loading.value = true
   try {
-    const response = await ZulkitDB.getCategories({ limit: 4 })
+    const response = await ZulkitDB.getCategories({ limit: 20 })
     categories.value = response.data
   } catch (err) {
     error.value = err.toString()
@@ -21,21 +21,15 @@ async function fetchCategories() {
   }
 }
 
-// const limitCategories = computed(() => categories.value.slice(0, 4))
-
 watchEffect(() => {
   fetchCategories()
 })
-
-// onMounted(() => {
-//   fetchCategories()
-// })
 </script>
 
 <template>
   <div class="container px-4 mx-auto my-16 md:px-12" id="categories">
-    <h2 class="mb-4 text-xl font-medium md:mb-0 md:text-lg">Top Categories</h2>
-    <div v-if="loading" class="loading">
+    <h2 class="mb-4 text-xl font-medium md:mb-0 md:text-lg">All Categories</h2>
+     <div v-if="loading" class="loading">
         loading...
       </div>
       <div v-if="error" class="error">{{ error }}</div>
@@ -49,9 +43,9 @@ watchEffect(() => {
         :count="category.products_count"
       />
     </div>
+
     <div v-else class="">
       <h2 class="mb-4 text-xl font-medium md:mb-0 md:text-lg text-center">No Product Found</h2>
     </div>
-    
   </div>
 </template>

@@ -16,7 +16,11 @@ const props = defineProps({
   },
   description: {
     type: String,
-    required: true,
+    required: false,
+  },
+  subTitle: {
+    required: false,
+    type: String,
   },
 })
 </script>
@@ -39,7 +43,7 @@ const props = defineProps({
             {{ title }}
           </RouterLink>
         </h1>
-        <span class="block text-sm font-light text-gray-500 no-underline"> {{ description }} </span>
+        <span class="block text-sm font-light text-gray-500 no-underline"> {{ subTitle }} </span>
       </header>
     </div>
   </div>

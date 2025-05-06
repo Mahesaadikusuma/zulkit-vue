@@ -43,6 +43,31 @@ const router = createRouter({
         title: 'Product',
       },
     },
+
+    {
+      path: '/categories',
+      name: 'categories',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/CategoriesView.vue'),
+      meta: {
+        title: 'Categories',
+      },
+    },
+
+    {
+      path: '/categories/:id',
+      name: 'category-items',
+      // route level code-splitting
+      // this generates a separate chunk (About.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      component: () => import('../views/CategoryItems.vue'),
+      meta: {
+        title: 'Category',
+      },
+    },
+
     {
       path: '/success',
       name: 'success',
@@ -65,24 +90,11 @@ const router = createRouter({
         title: 'Pricing',
       },
     },
-
-    {
-      // path: '/about',
-      // name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      // component: () => import('../views/AboutView.vue'),
-    },
   ],
 })
 
 // Ini set Set judul global (semua halaman)
 router.beforeEach((to, from, next) => {
-  console.log(to)
-  console.log(from)
-  console.log(next)
-
   if (to.params) {
     document.title = `${to.meta?.title ?? 'Page'} ${('-', to.params.id ?? '')}`
   } else {

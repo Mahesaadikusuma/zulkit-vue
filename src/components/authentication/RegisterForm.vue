@@ -1,12 +1,36 @@
 <script setup>
-import { reactive } from 'vue'
+import ZulkitDB from '@/Api/data/zulkitData'
+import { reactive, ref } from 'vue'
 import { RouterLink } from 'vue-router'
 
 const form = reactive({
   name: '',
   email: '',
   password: '',
+  title: 'Designer',
 })
+
+const loading = ref(null)
+const error = ref(null)
+
+async function Register() {
+  loading.value = true
+  try {
+    const data = {
+      title: form.title,
+      name: form.name,
+      email: form.email,
+      password: form.password,
+    }
+    const response = await ZulkitDB.AuthRegister(data)
+    localStorage.setItem('tokenAuth', response.access_token)
+    localStorage.setItem('token_type', response.token_type)
+  } catch (err) {
+    error.value = err.toString()
+  } finally {
+    loading.value = false
+  }
+}
 </script>
 
 <template>
@@ -28,7 +52,7 @@ const form = reactive({
         v-model.lazy="form.email"
         placeholder="Type your email"
         id="email"
-        type="text"
+        type="email"
         name="email"
         class="block w-full py-3 mt-2 border border-gray-300 rounded-full shadow-sm px-7 focus:border-indigo-300 focus:outline-none focus:ring focus:ring-indigo-200 focus:ring-opacity-50 disabled:bg-gray-100"
       />
@@ -45,12 +69,13 @@ const form = reactive({
       />
     </div>
     <div class="mt-6">
-      <a
-        type="button"
+      <button
+        @click.prevent="Register"
+        type="submit"
         class="inline-flex items-center justify-center w-full px-8 py-3 text-base font-medium text-white bg-indigo-600 border border-transparent rounded-full hover:bg-indigo-700 md:py-2 md:text-lg md:px-10 hover:shadow"
       >
         Continue Sign Up
-      </a>
+      </button>
       <RouterLink
         to="/login"
         class="inline-flex items-center justify-center w-full px-8 py-3 mt-2 text-base font-medium text-black bg-gray-200 border border-transparent rounded-full hover:bg-gray-300 md:py-2 md:text-lg md:px-10 hover:shadow"
